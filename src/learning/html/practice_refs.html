@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <script src="https://unpkg.com/prop-types@15.6.2/prop-types.js"></script>
+</head>
+<body>
+<div id="test"></div>
+<div id="test1"></div>
+<div id="test2"></div>
+<div id="test3"></div>
+<script type="text/babel">
+    /*1）字符串形式的 ref：最简单，但是被官网抛弃，影响效率
+　　　　<input ref="input1"/>
+　　2）回调函数形式的 ref：常用内联函数形式
+　　　　<input ref={c => this.input1 = c} />
+　　3）createRef ：最麻烦，官网最推荐，目前最新用法
+　　　　myRef = React.createRef()
+　　　　<input ref={this.myRef} />*/
+    //可以通过event.target得到事件发生的dom元素
+    class Demo extends React.Component { //字符串形式的ref 不推荐使用了！！！ 因为string类型的refs时存在问题，效率低
+        showData = (refs)=> { //refs的使用可以代替id
+            // const input = document.getElementById("input1")
+            // alert(input.value)
+            console.log(this) //ref情况下，输出Demo组件的实例对象
+            alert(this.refs.input1.value); //input1是真实dom refs是一个属性值
+
+        }
+        showData2 = (refs)=> {
+            alert(this.refs.input2.value); //input1是真实dom
+        }
+        render() {
+            return (
+                <div>
+                    <input ref = "input1" type="text" placeholder="点击按钮提示数据"/>&nbsp;
+                    <button ref = "button100" onClick={()=>this.showData()}>点我提示左侧数据</button>&nbsp;
+                    <input ref = "input2" type="text" placeholder="失去焦点提示数据" onBlur={() =>this.showData2()}/>
+                </div>
+            )
+        }
+    }
+    ReactDOM.render(
+        <Demo/>,
+        document.getElementById("test")
+    )
+
+    //回调函数形式的ref
+    class Demo1 extends React.Component {
+        showData = ()=> { //refs的使用可以代替id
+            const {input1} = this
+            alert(input1.value)
+        }
+        showData2 = ()=> {
+            const {input2} = this
+            alert(input2.value)
+        }
+        render() {
+            return ( // 两种写法都行
+                // <input ref = {currentNode=>this.input1 = currentNode} type="text" placeholder="点击按钮提示数据"/>&nbsp;
+                <div>
+                    <input ref = {(currentNode)=> {this.input1 = currentNode}} type="text" placeholder="点击按钮提示数据"/>&nbsp;
+                    <button ref = "button100" onClick={()=>this.showData()}>点我提示左侧数据</button>&nbsp;
+                    <input ref = {currentNode=>this.input2 = currentNode} type="text" placeholder="失去焦点提示数据" onBlur={() =>this.showData2()}/>
+                </div>
+            )
+        }
+    }
+    ReactDOM.render(
+        <Demo1/>,
+        document.getElementById("test1")
+    )
+
+    //回调函数形式的ref执行次数问题
+    class Demo2 extends React.Component {
+        state = {isHot:true}
+        showData = ()=> {
+            const {input1} = this
+            alert(input1.value)
+        }
+        changeWeather = ()=> {
+            const {isHot} = this.state;
+            this.setState({
+                isHot: !isHot
+            })
+        }
+
+        saveValue = (c)=> {
+            this.input2 = c
+        }
+        render() {
+            return (
+                <div>
+                    <h2>今天天气很{this.state.isHot?"炎热":"凉爽"}</h2>
+                    <input ref = {currentNode=>this.input1 = currentNode} type="text" placeholder="点击按钮提示数据"/>&nbsp; {/*内联函数的话，执行两次*/}
+                    <input ref = {this.saveValue} type="text" placeholder="点击按钮提示数据"/>&nbsp; {/*class绑定的ref*/}
+                    <button ref = "button100" onClick={()=>this.showData()}>点我提示左侧数据</button>&nbsp;
+                    <button onClick={()=>this.changeWeather()}>点我提示左侧数据</button>&nbsp;
+                </div>
+            )
+        }
+    }
+    ReactDOM.render(
+        <Demo2/>,
+        document.getElementById("test2")
+    )
+
+    //create形式的ref 该容器是专人专用的
+    //当发生事件是操作的dom元素时，尽量不要写ref  不要过度使用ref
+    class Demo3 extends React.Component {
+        myRef = React.createRef() //react最新的api
+        myRef2 = React.createRef()
+        showData = () => {
+            console.log(this.myRef)
+            alert(this.myRef.current.value)
+        }
+        showData2 = () => {
+            alert(this.myRef2.current.value)
+        }
+        render() {
+            return (
+                <div>
+                    <input ref={this.myRef} type="text" placeholder="点击按钮提示数据"/>&nbsp;
+                    <button onClick={this.showData}>点我提示左侧数据</button>&nbsp;
+                    <input ref={this.myRef2} onBlur={this.showData2} type="text" placeholder="失去焦点提示数据"/>&nbsp;
+                </div>
+            )
+        }
+    }
+    ReactDOM.render(
+        <Demo3/>,
+        document.getElementById("test3")
+    )
+</script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <style>
+        @import url("../css/wallPaper.css");
+    </style>
+</head>
+<body>
+<div id="app"></div>
+<script type="text/babel">
+    class TimeNow extends React.Component{
+        constructor(){
+            super();
+            this.state = {
+                date: '',
+                time: ''
+            }
+        }
+        componentDidMount = () =>{
+            setInterval(()=>{
+                let d = new Date();
+                let date = `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+                let time = `${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`;
+                this.setState({
+                    date,
+                    time
+                });
+            }, 1000);
+        }
+        render = () => {
+            const {time,date} = this.state;
+            return (
+                <div>
+                    <div className="wallpaper_time">{date}</div>
+                    <div className="wallpaper_time">{time}</div>
+                </div>
+            )
+        }
+    }
+    class Poetry extends React.Component{
+        onClick = ()=>{
+        }
+        render = ()=>{
+            return (
+                <div className="poetry">
+                    <div onClick={this.onClick}>红豆生南国，春来发几枝。愿君多采撷，此物最相思。</div>
+                </div> )
+        }
+    }
+    class MessageBox extends React.Component{
+        onClick = ()=>{
+            alert('clicked');
+        }
+        render = ()=>{
+            return (
+                <div className="mobile">
+                    <h1 onClick={this.onClick} className="wallpaper_title">猪猪的壁纸</h1>
+                    <TimeNow />
+                    <Poetry />
+                </div> )
+        }
+    }
+    ReactDOM.render(
+        <MessageBox/>,
+        document.getElementById('app'),
+    )
+</script>
+</body>
+</html>

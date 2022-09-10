@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <script src="https://unpkg.com/prop-types@15.6.2/prop-types.js"></script>
+</head>
+<body>
+<div id="test"></div>
+<script type="text/babel">
+    class Count extends React.Component {
+        render() {
+            return (
+                <div>
+
+                </div>
+            )
+        }
+    }
+    class A extends React.Component {
+        state = {
+            carName: '奥迪'
+        }
+        changeName = () => {
+            this.setState({
+                carName: '奔驰'
+            })
+        }
+        render() {
+            return (
+                <div>
+                    <div>我是A组件</div>
+                    <button onClick= {this.changeName}>切换</button>
+                    <B carName = {this.state.carName}></B>
+                </div>
+            )
+        }
+    }
+    class B extends React.Component {
+        //组件将要接收新的props的钩子，首次接受poros不更新componentWillReceiveProps这个函数
+        componentWillReceiveProps(props){ //返回状态对象，不能是undefined
+            console.log('B---componentWillReceiveProps',props);
+        }
+
+        //控制组件更新的“阀门”
+        shouldComponentUpdate(){
+            console.log('B---shouldComponentUpdate');
+            return true
+        }
+        //组件将要更新的钩子
+        componentWillUpdate(){
+            console.log('B---componentWillUpdate');
+        }
+
+        //组件更新完毕的钩子
+        componentDidUpdate(){
+            console.log('B---componentDidUpdate');
+        }
+        render() {
+            console.log('B--------render')
+            return (
+                <div>我是B组件，我收到的是：{this.props.carName}</div>
+            )
+        }
+    }
+
+    ReactDOM.render(
+        <A/>,
+        document.getElementById("test")
+    )
+
+    //虚拟dom中key的作用  1
+    // 1). 简单的说: key是虚拟DOM对象的标识, 在更新显示时key起着极其重要的作用。
+    //
+    // 2). 详细的说: 当状态中的数据发生变化时，react会根据【新数据】生成【新的虚拟DOM】,
+    // 随后React进行【新虚拟DOM】与【旧虚拟DOM】的diff比较，比较规则如下：
+    //         a. 旧虚拟DOM中找到了与新虚拟DOM相同的key：
+    //             (1).若虚拟DOM中内容没变, 直接使用之前的真实DOM
+    //             (2).若虚拟DOM中内容变了, 则生成新的真实DOM，随后替换掉页面中之前的真实DOM
+    //
+    //         b. 旧虚拟DOM中未找到与新虚拟DOM相同的key
+    //             根据数据创建新的真实DOM，随后渲染到到页面
+
+    //index作为key引发的问题
+    // 1. 若对数据进行：逆序添加、逆序删除等破坏顺序操作:
+    //     会产生没有必要的真实DOM更新 ==> 界面效果没问题, 但效率低。
+    //  2. 如果结构中还包含输入类的DOM：
+	//     会产生错误DOM更新 ==> 界面有问题。
+	//  3. 注意！如果不存在对数据的逆序添加、逆序删除等破坏顺序操作，
+	// 	   仅用于渲染列表用于展示，使用index作为key是没有问题的。
+
+</script>
+</body>
+</html>

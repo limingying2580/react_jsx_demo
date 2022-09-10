@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/public/student.txt" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/App1.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/App2.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/learning/jsx/practice1/Footer.jsx" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/learning/jsx/practice1/Header.jsx" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/learning/jsx/practice1/Item.jsx" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/learning/jsx/practice1/List.jsx" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/learning/jsx/practice3/List.jsx" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/learning/jsx/practice3/Search.jsx" charset="UTF-8" />
+  </component>
+</project>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <script src="./node_modules/babel-core/browser.min.js"></script>
+</head>
+<body>
+<div id="test"></div>
+<script type="text/babel">
+    // function MyCompent() {  //函数组件
+    //     console.log(this) //babel严格模式开启，this指向为undefined
+    //     return <h2>函数定义的组件，适用于简单组件的定义</h2>
+    // }
+    //
+    //
+    // class Person { //类式组件 要继承React.Component 要有render和返回值
+    //   constructor(name,age) {
+    //       this.name = name
+    //       this.age = age
+    //   }
+    //
+    //   speak() { //放在原型对象说，供实例使用 this通过调用方式改变
+    //       console.log(`我叫${this.name},我的年龄是${this.age}`)
+    //   }
+    // }
+    // const p1 = new Person('tom',18);
+    // p1.speak();
+    // console.log(p1);
+    //
+    //
+    // class Student extends Person {
+    //     constructor(name,age,grade,school) {
+    //         super(name,age);
+    //         this.grade = grade
+    //         this.school = "学校"
+    //     }
+    //
+    //     speak() { //放在原型对象说，供实例使用 this通过调用方式改变
+    //         console.log(`我叫${this.name},我的年龄是${this.age},我的年级是${this.grade}`)
+    //     }
+    //
+    //     // study(){
+    //     //     console.log("我在努力学习")
+    //     // }
+    // }
+    // const s1 = new Student('小站',20,"高三")
+    // console.log(s1)
+    // s1.speak()
+
+    // class MyCom extends React.Component {
+    //     render() {
+    //         console.log(this)
+    //         return <h2>我是类定义的组件,复杂组件</h2>
+    //     }
+    // }
+
+    class ClickChange extends React.Component { //类中可以写构造器、方法、赋值语句
+        constructor(props) { //构造器中的this是实例 //用箭头函数写的话，不用写构造器了，把state提到外面去
+            super(props);
+            // this.state = { //可以写在构造器中
+            //     flag: true,
+            //     wind: '微风'
+            // }
+        }
+        state = {
+            flag: true,
+            wind: '微风'
+        }
+        onClick = (flag) =>{
+            this.setState({ //状态值是不可以直接更改的，要借助内部的api去处理setState
+                flag: !flag
+            })
+            console.log(this.state.flag)
+        }
+        onClick2(){ //这种方法中，是作为onClick的回调，不是原型对象，所this指向不明
+            //构造函数可以实例化对象
+            //在普通函数中，this总是指向调用它的对象，如果用作构造函数，this指向创建的对象实例。
+            console.log(this) //这种情况下this是undefined
+            //可以在构造器中添加 this.onClick2 = this.onClick2.bind(this)解决
+        }
+        onClick3 = ()=>{ //用箭头函数可以不用写构造器了  作为赋值语句的箭头函数
+            //箭头函数都是匿名函数，不能用于构造函数，不能new
+            //箭头函数本身没有this，但是它在声明时可以捕获其所在上下文的this供自己使用。this一旦被捕获，就不再发生变化
+            //箭头函数在全局作用域声明，所以它捕获全局作用域中的this，this指向window对象。
+            //箭头函数结合call(),apply()方法调用一个函数时，只传入一个参数对this没有影响。
+            console.log(this) //这种情况下this是原型对象实例上的this
+        }
+        //(1).箭头函数的 this 永远指向其上下文的 this ，任何方法都改变不了其指向，如 call() , bind() , apply()
+        //(2).普通函数的this指向调用它的那个对象
+        render() { //render调用是1+n次
+            return (
+                <div>
+                    <h1>今天天气很{this.state.flag ? '炎热' : '凉爽'},{this.state.wind}</h1> <!--render中的this是组件的实例对象-->
+                    <button onClick={()=>this.onClick(this.state.flag)}> 点击切换天气</button>
+                    <button onClick={this.onClick2}> 点击切换天气2</button>
+                    <button onClick={this.onClick3}> 点击切换天气3</button>
+                </div>
+                )
+        }
+    }
+
+    ReactDOM.render(
+        // <MyCompent/>, //组件的标签首字母必须大写 必须有返回值
+        // <MyCom/>,
+        <ClickChange/>,
+        document.getElementById('test')
+    )
+</script>
+</body>
+</html>

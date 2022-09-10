@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <script src="https://unpkg.com/prop-types@15.6.2/prop-types.js"></script>
+</head>
+<body>
+<div id="test1"></div>
+<div id="test2"></div>
+<div id="test3"></div>
+<div id="test4"></div>
+<div id="test5"></div>
+<div id="test6"></div>
+<div id="test7"></div>
+<div id="test8"></div>
+<script type="text/babel">
+    class Person1 extends React.Component {
+        state = {
+            name: 'tom',
+            sex: '女',
+            age: '18'
+        }
+        render() {
+            console.log(this)
+            return ( //通过state传值
+                <ul>
+                    <li>姓名：{this.state.name}</li>
+                    <li>性别：{this.state.sex}</li>
+                    <li>年龄：{this.state.age}</li>
+                </ul>
+            )
+        }
+    }
+    ReactDOM.render(
+        <Person1/>,
+        document.getElementById("test1")
+    )
+
+    class Person2 extends React.Component {
+        state = {
+            name: 'tom',
+            sex: '女',
+            age: '18'
+        }
+        render() {
+            console.log(this)
+            const {name,sex,age} = this.props //解构赋值法
+            return ( //通过props传值 //props的基本使用
+                <ul>
+                    <li>姓名：{this.props.name}</li>
+                    <li>性别：{this.props.sex}</li>
+                    <li>年龄：{this.props.age}</li>
+                    <li>年龄2：{age}</li>
+                    <li>年龄3：{Number(age) + 1}</li>
+                </ul>
+            )
+        }
+    }
+    ReactDOM.render(
+        <Person2 name = 'jerry' age = '20' sex = '男'/>,
+        document.getElementById("test2")
+    )
+    //展开运算符的使用
+    let arr1 =[1,2,3,4,5]
+    let arr2 =[2,4,6,8,10]
+    let arr3 = [...arr1,...arr2]
+    console.log(arr1) //输出[1,2,3,4,5]
+    console.log(...arr2) //输出2 4 6 8 10
+    console.log(arr3) //输出[1,2,3,4,5,2,4,6,8,10]
+    console.log(...arr3) //输出1 2 3 4 5 2 4 6 8 10
+
+    const p ={name:'小白',sex:'男',age:24}
+    ReactDOM.render(
+        <Person2 name = {p.name} age = {p.age} sex = {p.sex}/>,
+        document.getElementById("test3")
+    )
+    ReactDOM.render(
+        <Person2 {...p}/>, //使用展开运算符复制对象
+        //展开运算符使用的对象内部如果是 基本数据类型(int、boolean等等)，就是深拷贝；
+        // 展开运算符使用的对象内部如果是 引用数据类型(class、interface、数组)，那就是浅拷贝；
+        document.getElementById("test4")
+    )
+    let p2 = {...p,name : 'jack'} //展开并修改
+    ReactDOM.render(
+        <Person2 {...p2}/>, //使用展开运算符复制对象
+        document.getElementById("test5")
+    )
+
+    class Person3 extends React.Component {
+        state = {
+            name: 'tom',
+            sex: '女',
+            age: '18'
+        }
+        render() {
+            console.log(this)
+            const {name,sex,age} = this.props //解构赋值法 props是只读的，不能改
+            return ( //通过props传值 //props的基本使用
+                <ul>
+                    <li>姓名：{name}</li>
+                    <li>性别：{sex}</li>
+                    <li>年龄：{age}</li>
+                </ul>
+            )
+        }
+    }
+    //限制类型和必要性 对组件标签属性进行限制
+    Person3.propTypes = {
+        // name:React.PropTypes.string, //react15.5版本后，此方法被弃用
+        name: PropTypes.string.isRequired, //isRequired表示必填项
+        age: PropTypes.number,
+        sex: PropTypes.string,
+        speak: PropTypes.func //限制speak为函数
+    }
+    Person3.defaultProps = {//sex，age不传的话，设置了个默认值
+        sex: '不男不女',
+        age: 18
+    }
+    ReactDOM.render(
+        <Person3 name = 'jerry' age={19}/>,//sex，age不传的话，设置了个默认值
+        document.getElementById("test6")
+    )
+
+    //props的简写方式
+    class PersonShorthand extends React.Component {
+        //构造器的使用 1.传入state 2.为事件处理函数绑定实例
+        //构造器是否接收props，是否传递给super，取决于是否希望在构造器中通过this传递props
+        constructor(props) { //开发过程中尽量不写构造器
+            super(props); //写构造器必调super，否则初始化
+            console.log("constructor:",props) //可以不写成this.props
+        }
+        state = {
+            name: 'tom',
+            sex: '女',
+            age: '18'
+        }
+        static propTypes = { //简易写法就是放在类的里面 需要加static
+            name: PropTypes.string.isRequired,
+            age: PropTypes.number,
+            sex: PropTypes.string,
+            speak: PropTypes.func
+        }
+        static defaultProps = {
+            sex: '不男不女',
+            age: 18
+        }
+        render() {
+            const {name,sex,age} = this.props
+            return (
+                <ul>
+                    <li>姓名：{name}</li>
+                    <li>性别：{sex}</li>
+                    <li>年龄：{age}</li>
+                </ul>
+            )
+        }
+    }
+    ReactDOM.render(
+        <PersonShorthand name = '简易写法' age={99}/>,//sex，age不传的话，设置了个默认值
+        document.getElementById("test7")
+    )
+
+    //函数式组件使用props
+    // function  PersonFunc (props) { 用不了refs和state，可以使用hooks
+    //     const {name,age,sex} = this.props
+    //         return (
+    //             <ul>
+    //                 <li>姓名：{name}</li>
+    //                 <li>性别：{sex}</li>
+    //                 <li>年龄：{age}</li>
+    //             </ul>
+    //         )
+    // }
+    // Person3.propTypes = {
+    //     name: PropTypes.string.isRequired,
+    //     age: PropTypes.number,
+    //     sex: PropTypes.string,
+    // }
+    // Person3.defaultProps = {
+    //     sex: '不男不女',
+    //     age: 18
+    // }
+    // ReactDOM.render(
+    //     <PersonFunc name = '函数式组件使用props' age={100} sex="女"/>,
+    //     document.getElementById("test8")
+    // )
+</script>
+</body>
+</html>

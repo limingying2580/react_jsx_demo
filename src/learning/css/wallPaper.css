@@ -1,0 +1,50 @@
+.mobile {
+    width: 300px;
+    height: 700px;
+    border: 1px solid lightblue;
+    box-shadow: 1px 1px 0px 0px #c6c6c6;
+    background: url("../img/wallpaper.jpeg");
+}
+
+.wallpaper_title {
+    color: #c271cc;
+    display: flex;
+    justify-content: center;
+    margin-top: 30%;
+}
+.wallpaper_time {
+    color: #b35fbd;
+    display: flex;
+    justify-content: center;
+    margin-top: 10%;
+    font-size: 15pt;
+    font-weight: 700;
+}
+
+.poetry{
+    float: right;
+    margin-right: 15%;
+    height: 201px;
+    color: #899bdc;
+    font-family: cursive;
+    font-size: 24pt;
+    font-weight: 700;
+    margin-top: 132px;
+    writing-mode: vertical-rl;/*从左向右 从右向左是 writing-mode: vertical-rl;*/
+    writing-mode: tb-rl;/*IE浏览器的从左向右 从右向左是 writing-mode: tb-rl；*/
+    background-image: -webkit-linear-gradient(left, #a03313, #b16f36 25%, #d8a17b 50%, #b76b3f 75%, #cc370c);
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    -webkit-background-size: 200% 100%;
+    -webkit-animation: maskedAnimation 4s infinite linear;
+}
+
+@keyframes maskedAnimation {
+    0% {
+        background-position: 0 0;
+    }
+
+    100% {
+        background-position: -100% 0;
+    }
+}
